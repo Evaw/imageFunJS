@@ -1,0 +1,11 @@
+Playing with canvas pixel manipulation.
+Current implementations
+
+addNoise: Add gaussian noise to image
+blackAndWhite
+chromaBlue: needs verification
+chromaRed: needs verification
+grayScale
+noEffect
+swapRGBtoBRG
+
