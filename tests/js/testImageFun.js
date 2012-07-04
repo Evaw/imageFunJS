@@ -31,7 +31,9 @@
 			ok(imageFun.fxCore.clamp(-1, 5, 2) === 2, 'clamp low');
 			ok(imageFun.fxCore.clamp(6, 5, 2) === 5, 'clamp high');
 			ok(imageFun.fxCore.clamp(-9, 5) === 0, ' using default 0 min');
-			var exceptRx = /bad\s+parameters,\s+max:\s*[0-9]+\s+min:\s*[0-9]+/;
+			
+			var exceptRx = /bad\s+parameters,\s+max:\s*-*[0-9]+\s+min:\s*-*[0-9]+/;
+			raises(function(){imageFun.fxCore.clamp(-9,-9)}, exceptRx, 'expection thrown when min>max, default min')
 			raises(function() {
 				imageFun.fxCore.clamp(4, 1, 2);
 			}, exceptRx, 'expection thrown when min>max');
@@ -57,11 +59,11 @@
 			modCounterSimpleTest(4);
 			modCounterSimpleTest(100);
 		});
-		test('modCounter - startValue', funcmodCounterSimpleTesttion(){
-			modCounterSimpleTest(2);
-			modCounterSimpleTest(3);
-			modCounterSimpleTest(4);
-			modCounterSimpleTest(100);
+		test('modCounter - startValue', function(){
+			modCounterWitStartTest(2,-1);
+			modCounterWitStartTest(3,-1);
+			modCounterWitStartTest(4,-1);
+			modCounterWitStartTest(100,-30);
 		});
 	}()
 );

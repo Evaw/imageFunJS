@@ -57,11 +57,12 @@ imageFun.fx = imageFun.fx || {};
 			this.count = countingFn;
 		},
 		clamp:function(val, max, min) {
-			if(min > max){
-				throw new Error('bad parameters, max:' + max +' min:' +min);
-			}
+			
 			if(min === undefined){
 				min = 0;
+			}
+			if(min > max){
+				throw new Error('bad parameters, max:' + max +' min:' +min);
 			}
 			val = val >= min ? val : min;
 			return val <= max ? val : max;
