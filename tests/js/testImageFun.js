@@ -40,6 +40,29 @@
 			ok(imageFun.fxCore.clamp(3, 3, 3) === 3, 'clamp max===min');
 
 		});
+		var modCounterWitStartTest=function(modCounterSetSize, start){
+			var nAryModCounter = new imageFun.fxCore.ModCounter(modCounterSetSize, start);
+			var i, ans;
+			for(i=start;i<modCounterSetSize*3;i+=1){
+				ans = imageFun.fxCore.mod(i, modCounterSetSize);
+				ok(ans===nAryModCounter.count());
+			}			
+		};
+		var modCounterSimpleTest=function(modCounterSetSize){
+			modCounterWitStartTest(modCounterSetSize, 0)
+		};
+		test('ModCounter',function(){
+			modCounterSimpleTest(2);
+			modCounterSimpleTest(3);
+			modCounterSimpleTest(4);
+			modCounterSimpleTest(100);
+		});
+		test('modCounter - startValue', funcmodCounterSimpleTesttion(){
+			modCounterSimpleTest(2);
+			modCounterSimpleTest(3);
+			modCounterSimpleTest(4);
+			modCounterSimpleTest(100);
+		});
 	}()
 );
 

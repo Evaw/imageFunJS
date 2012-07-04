@@ -48,7 +48,7 @@ imageFun.fx = imageFun.fx || {};
 			if(start === undefined){
 				start = 0;
 			}
-			start = imageFun.fxCore.mod(start,eltSetSize);
+			cur = imageFun.fxCore.mod(start,eltSetSize);
 			var countingFn = function(){
 				var retVal = cur;
 				cur = (cur+1)%max;
