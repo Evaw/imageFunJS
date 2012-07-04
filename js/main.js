@@ -1,7 +1,8 @@
 /*global $:false, document: false, webkitURL: false, console:false*/
 /*jslint plusplus: true, vars: true, white: true */
 var imageFun = imageFun || {};
-imageFun.fx = imageFun.fx || {}; ( function() {"use strict";
+imageFun.fx = imageFun.fx || {};
+( function() {"use strict";
 		var effectFunction = function() {
 		};
 		var canvas;
@@ -49,19 +50,20 @@ imageFun.fx = imageFun.fx || {}; ( function() {"use strict";
 			canvasContext.drawImage(canvasBuff, 0, 0, canvasBuff.width, canvasBuff.height);
 		}
 
-		function callSamplingTimeoutAgain(){
+		function callSamplingTimeoutAgain() {
 			var curTime = new Date();
 			var timeDiff = curTime - lastDate;
 			var nextTimeoutTime = samplingPeriod - timeDiff;
-			if(nextTimeoutTime<0){
+			if (nextTimeoutTime < 0) {
 				//the previous calculation took longer than sampling period
-				
+
 				console.warn('the effect is taking too long');
 				setTimeout(samplingTimeoutCall, 1);
 			} else {
 				setTimeout(samplingTimeoutCall, nextTimeoutTime);
 			}
 		}
+
 		function samplingTimeoutCall() {
 			lastDate = new Date();
 			drawVideoToBuffCanvas();
@@ -109,7 +111,7 @@ imageFun.fx = imageFun.fx || {}; ( function() {"use strict";
 				var s;
 				var p = $('<p></p>');
 				s = 'could not get webcam stream. Use a browser that supports getUserMedia API.';
-				s +=  'Known to run in Google Chrome 20 (jul 3, 2012) with mediaStream flag enabled';
+				s += 'Known to run in Google Chrome 20 (jul 3, 2012) with mediaStream flag enabled';
 				p.html(s);
 				$('body').empty().append(p);
 				console.log("getUserMedia error.");
@@ -126,8 +128,11 @@ imageFun.fx = imageFun.fx || {}; ( function() {"use strict";
 			samplingPeriod = 100;
 
 			addFunctionOptions();
-			getUserMedia();//obtaining media successfully starts the interval to get the video image
+			getUserMedia();
+			//obtaining media successfully starts the interval to get the video image
 		}
+
+
 		$(document).ready(init);
 	}()
 );
