@@ -29,6 +29,16 @@ imageFun.fx = imageFun.fx || {};
 			ctx.putImageData(data, 0,0);
 			//console.log(new Date() - start);
 		},
+		/**
+		 * @returns a mod b
+		 */
+		mod:function(a,b){
+			if(a<0){
+				return (a%b + b)%b;
+			}else {
+				return a%b;
+			}
+		},
 		/*
 		 * counter counts from start
 		 * use with new keword to make new mod counters
@@ -38,11 +48,7 @@ imageFun.fx = imageFun.fx || {};
 			if(start === undefined){
 				start = 0;
 			}
-			if(start<0){
-				cur = start%max + max;
-			}else {
-				cur = start%max;
-			}
+			start = imageFun.fxCore.mod(start,eltSetSize);
 			var countingFn = function(){
 				var retVal = cur;
 				cur = (cur+1)%max;
@@ -51,6 +57,9 @@ imageFun.fx = imageFun.fx || {};
 			this.count = countingFn;
 		},
 		clamp:function(val, max, min) {
+			if(min > max){
+				throw new Error('bad parameters, max:' + max +' min:' +min);
+			}
 			if(min === undefined){
 				min = 0;
 			}
