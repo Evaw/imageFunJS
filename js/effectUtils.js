@@ -33,7 +33,7 @@ imageFun.fx = imageFun.fx || {};
 		 * counter counts from start
 		 * use with new keword to make new mod counters
 		 */
-		modCounter: function(eltSetSize, start){
+		ModCounter: function(eltSetSize, start){
 			var cur, max = eltSetSize;
 			if(start === undefined){
 				start = 0;

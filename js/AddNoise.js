@@ -1,21 +1,21 @@
 /*global $:false, document: false*/
 /*jslint nomen: true, plusplus: true, vars: true, white: true */
 var imageFun = imageFun || {};
-imageFun.fx = imageFun.fx || {};
-( function() {"use strict";
+imageFun.fx = imageFun.fx || {}; ( function() {"use strict";
 		imageFun.fx.addNoise = {};
 		//imageFun.fx.addNoise.prototype = imageFun.fx.fxCore;
 		var fxCore = imageFun.fxCore;
 		var me = imageFun.fx.addNoise;
+
 		var addNoiseBase = {
-			binaryModCounter : (new fxCore.modCounter(2)),
+			binaryModCounter : new fxCore.ModCounter(2),
 			sinSample : null,
 			cosSample : null,
 			twoPI : 2 * Math.PI,
 			stdev : 128,
 			mean : 0,
 			_init : function() {
-				me.binaryModCounter = (new fxCore.modCounter(2));
+				me.binaryModCounter = new fxCore.ModCounter(2);
 				me.stdev = 10;
 				me.mean = 0;
 			},
@@ -40,12 +40,23 @@ imageFun.fx = imageFun.fx || {};
 				var gaussRand = me.generateGaussianSample(me.mean, me.stdev);
 				imgData.data[index] = fxCore.clamp(imgData.data[index] + gaussRand, 255, 0);
 			},
+			_effectHelper : function(imgData, x, y, dataIndex) {
+				me._addAndClamp(imgData, dataIndex);
+				me._addAndClamp(imgData, dataIndex + 1);
+				me._addAndClamp(imgData, dataIndex + 2);
+			},
 			applyEffect : function(canvas, options) {
+				//much better performance by not creating annonymous function every call
+				fxCore.pixelByPixelIteration(canvas, me._effectHelper);
+				
+				/*this has worse performance (larger method, which chould prevent JIT and also creation of function every single call)
 				fxCore.pixelByPixelIteration(canvas, function(imgData, x, y, dataIndex) {
 					me._addAndClamp(imgData, dataIndex);
 					me._addAndClamp(imgData, dataIndex + 1);
 					me._addAndClamp(imgData, dataIndex + 2);
 				});
+				*/
+
 			},
 			changeParameters : function(newMean, newStdev) {
 				me.mean = newMean;
@@ -53,4 +64,4 @@ imageFun.fx = imageFun.fx || {};
 			}
 		};
 		$.extend(imageFun.fx.addNoise, addNoiseBase);
-	}());
+	}()); 
