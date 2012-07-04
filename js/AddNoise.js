@@ -1,7 +1,8 @@
 /*global $:false, document: false*/
 /*jslint nomen: true, plusplus: true, vars: true, white: true */
 var imageFun = imageFun || {};
-imageFun.fx = imageFun.fx || {}; ( function() {"use strict";
+imageFun.fx = imageFun.fx || {};
+( function() {"use strict";
 		imageFun.fx.addNoise = {};
 		//imageFun.fx.addNoise.prototype = imageFun.fx.fxCore;
 		var fxCore = imageFun.fxCore;
@@ -48,14 +49,14 @@ imageFun.fx = imageFun.fx || {}; ( function() {"use strict";
 			applyEffect : function(canvas, options) {
 				//much better performance by not creating annonymous function every call
 				fxCore.pixelByPixelIteration(canvas, me._effectHelper);
-				
+
 				/*this has worse performance (larger method, which chould prevent JIT and also creation of function every single call)
-				fxCore.pixelByPixelIteration(canvas, function(imgData, x, y, dataIndex) {
-					me._addAndClamp(imgData, dataIndex);
-					me._addAndClamp(imgData, dataIndex + 1);
-					me._addAndClamp(imgData, dataIndex + 2);
-				});
-				*/
+				 fxCore.pixelByPixelIteration(canvas, function(imgData, x, y, dataIndex) {
+				 me._addAndClamp(imgData, dataIndex);
+				 me._addAndClamp(imgData, dataIndex + 1);
+				 me._addAndClamp(imgData, dataIndex + 2);
+				 });
+				 */
 
 			},
 			changeParameters : function(newMean, newStdev) {
@@ -64,4 +65,4 @@ imageFun.fx = imageFun.fx || {}; ( function() {"use strict";
 			}
 		};
 		$.extend(imageFun.fx.addNoise, addNoiseBase);
-	}()); 
+	}());

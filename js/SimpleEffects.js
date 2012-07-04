@@ -1,7 +1,8 @@
 /*global $:false, document: false*/
 /*jslint nomen: true, plusplus: true, vars: true, white: true */
 var imageFun = imageFun || {};
-imageFun.fx = imageFun.fx || {}; ( function() {"use strict";
+imageFun.fx = imageFun.fx || {};
+( function() {"use strict";
 		var fxCore = imageFun.fxCore;
 		var simpleEffects = {
 			noEffect : {
