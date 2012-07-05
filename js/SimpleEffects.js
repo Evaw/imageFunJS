@@ -10,6 +10,36 @@ imageFun.fx = imageFun.fx || {};
 
 				}
 			},
+			setRZero : {
+				effectFunction : function(imgData, x, y, dataIndex) {
+					imgData = imgData.data;
+					imgData[dataIndex] = 0;
+
+				},
+				applyEffect : function(canvas, options) {
+					fxCore.pixelByPixelIteration(canvas, simpleEffects.setRZero.effectFunction);
+				}
+			},
+			setGZero : {
+				effectFunction : function(imgData, x, y, dataIndex) {
+					imgData = imgData.data;
+					imgData[dataIndex + 1] = 0;
+
+				},
+				applyEffect : function(canvas, options) {
+					fxCore.pixelByPixelIteration(canvas, simpleEffects.setGZero.effectFunction);
+				}
+			},
+			setBZero : {
+				effectFunction : function(imgData, x, y, dataIndex) {
+					imgData = imgData.data;
+					imgData[dataIndex + 2] = 0;
+
+				},
+				applyEffect : function(canvas, options) {
+					fxCore.pixelByPixelIteration(canvas, simpleEffects.setBZero.effectFunction);
+				}
+			},
 			blackAndWhite : {
 				effectFunction : function(imgData, x, y, dataIndex) {
 					imgData = imgData.data;
