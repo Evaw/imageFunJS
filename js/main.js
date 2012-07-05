@@ -30,6 +30,22 @@ imageFun.fx = imageFun.fx || {};
 			$(sel).bind('change', function(event) {
 				var selection = event.target.value;
 				effectFunction = imageFun.fx[selection].applyEffect;
+				if (selection === "RGBfilter") {
+					imageFun.fx[selection].changeSettings({
+						wrapAround : false,
+						centerR : 30,
+						rangeRup : 55,
+						rangeRdown : 30,
+
+						centerG : 120,
+						rangeGup : 70,
+						rangeGdown : 70,
+
+						centerB : 128,
+						rangeBup : 70,
+						rangeBdown : 70
+					});
+				}
 			});
 		}
 
@@ -58,9 +74,10 @@ imageFun.fx = imageFun.fx || {};
 				//the previous calculation took longer than sampling period
 
 				console.warn('the effect is taking too long');
-				samplingTimeout=setTimeout(samplingTimeoutCall, 1);
+				samplingTimeout = setTimeout(samplingTimeoutCall, 100);
+				//allow some time to not block browser
 			} else {
-				samplingTimeout=setTimeout(samplingTimeoutCall, nextTimeoutTime);
+				samplingTimeout = setTimeout(samplingTimeoutCall, nextTimeoutTime);
 			}
 		}
 
@@ -105,12 +122,12 @@ imageFun.fx = imageFun.fx || {};
 		function getUserCamera() {
 			try {
 				/*chrome cant make assignment of js var to point to native code*/
-				var getUserMediaStrings = ['getUserMedia','webkitGetUserMedia']; 
+				var getUserMediaStrings = ['getUserMedia', 'webkitGetUserMedia'];
 				var i;
-				var getUserMediaString=getUserMediaStrings[0];
-				for(i=0;i<getUserMediaStrings.length;i+=1){
-					if(navigator[getUserMediaStrings[i]]){
-						getUserMediaString=getUserMediaStrings[i];
+				var getUserMediaString = getUserMediaStrings[0];
+				for ( i = 0; i < getUserMediaStrings.length; i += 1) {
+					if (navigator[getUserMediaStrings[i]]) {
+						getUserMediaString = getUserMediaStrings[i];
 					}
 				}
 				navigator[getUserMediaString]({
@@ -135,7 +152,7 @@ imageFun.fx = imageFun.fx || {};
 			canvasBuffContext = canvasBuff.getContext('2d');
 			localVideo = document.getElementById('video');
 			samplingTimeout = null;
-			
+
 			addFunctionOptions();
 			getUserCamera();
 			//obtaining media successfully starts the interval to get the video image
