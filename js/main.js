@@ -58,9 +58,9 @@ imageFun.fx = imageFun.fx || {};
 				//the previous calculation took longer than sampling period
 
 				console.warn('the effect is taking too long');
-				setTimeout(samplingTimeoutCall, 1);
+				samplingTimeout=setTimeout(samplingTimeoutCall, 1);
 			} else {
-				setTimeout(samplingTimeoutCall, nextTimeoutTime);
+				samplingTimeout=setTimeout(samplingTimeoutCall, nextTimeoutTime);
 			}
 		}
 
@@ -81,13 +81,14 @@ imageFun.fx = imageFun.fx || {};
 			canvas.width = w;
 			canvas.height = h;
 			imageData = canvas.getContext('2d').getImageData(0, 0, w, h);
-			clearInterval(samplingTimeout);
+			clearTimeout(samplingTimeout);
 			samplingTimeout = setTimeout(samplingTimeoutCall, samplingPeriod);
 		}
 
 		function onUserMediaSuccess(stream) {
 			console.log("User has granted access to local media.");
-			var url = webkitURL.createObjectURL(stream);
+			var URL = window.webkitURL || window.URL;
+			var url = URL.createObjectURL(stream);
 			localVideo.style.opacity = 1;
 			$(localVideo).bind('canplay', function() {
 				createCanvasCapture();
@@ -101,9 +102,18 @@ imageFun.fx = imageFun.fx || {};
 			console.log('error getting media' + e);
 		}
 
-		function getUserMedia() {
+		function getUserCamera() {
 			try {
-				navigator.webkitGetUserMedia({
+				/*chrome cant make assignment of js var to point to native code*/
+				var getUserMediaStrings = ['getUserMedia','webkitGetUserMedia']; 
+				var i;
+				var getUserMediaString=getUserMediaStrings[0];
+				for(i=0;i<getUserMediaStrings.length;i+=1){
+					if(navigator[getUserMediaStrings[i]]){
+						getUserMediaString=getUserMediaStrings[i];
+					}
+				}
+				navigator[getUserMediaString]({
 					video : true
 				}, onUserMediaSuccess, onUserMediaError);
 				console.log("Requested access to local media.");
@@ -125,10 +135,9 @@ imageFun.fx = imageFun.fx || {};
 			canvasBuffContext = canvasBuff.getContext('2d');
 			localVideo = document.getElementById('video');
 			samplingTimeout = null;
-			samplingPeriod = 100;
-
+			
 			addFunctionOptions();
-			getUserMedia();
+			getUserCamera();
 			//obtaining media successfully starts the interval to get the video image
 		}
 
