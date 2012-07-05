@@ -1,5 +1,9 @@
 /*global $:false, document: false*/
 /*jslint nomen: true, plusplus: true, vars: true, white: true */
+/**TODO
+ * major improvement in performance if cache gaussian distribuition and use uniform distribution to get 
+ * values from the gaussian cache
+ */
 var imageFun = imageFun || {};
 imageFun.fx = imageFun.fx || {};
 ( function() {"use strict";

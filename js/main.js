@@ -94,7 +94,7 @@ imageFun.fx = imageFun.fx || {};
 			var h = $(localVideo).height();
 			canvasBuff.width = w;
 			canvasBuff.height = h;
-
+20
 			canvas.width = w;
 			canvas.height = h;
 			imageData = canvas.getContext('2d').getImageData(0, 0, w, h);
@@ -116,6 +116,7 @@ imageFun.fx = imageFun.fx || {};
 		}
 
 		function onUserMediaError(e) {
+			//TODO
 			console.log('error getting media' + e);
 		}
 

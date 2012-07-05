@@ -2,10 +2,11 @@ Playing with canvas pixel manipulation.
 Current implementations
 
 addNoise: Add gaussian noise to image
-blackAndWhite
-chromaBlue: needs verification
-chromaRed: needs verification
-grayScale
-noEffect
-swapRGBtoBRG
-
+blackAndWhite: black and white by getting average of r,g,b
+chromaBlue: show blue chroma, needs verification
+chromaRed: show red chroma, needs verification
+grayScale: use weighted sum of rgb to get the gray value
+noEffect: no effect (for use as control for performance comparison)
+swapRGBtoBRG: swap r,g,b 
+set to zero any of the RGB components
+RGBfilter: a filter that can select a contiguous subset of the RGB colorspace
