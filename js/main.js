@@ -15,7 +15,7 @@ imageFun.fx = imageFun.fx || {};
 		var lastDate;
 		var imageData;
 
-		function addFunctionOptions() {
+		var addFunctionOptions = function() {
 			var sel = document.getElementById('selectEffect');
 			var iterator, optionElt;
 			for (iterator in imageFun.fx) {
@@ -31,6 +31,7 @@ imageFun.fx = imageFun.fx || {};
 				var selection = event.target.value;
 				effectFunction = imageFun.fx[selection].applyEffect;
 				if (selection === "RGBfilter") {
+					//set rgb filter to something more interesting
 					imageFun.fx[selection].changeSettings({
 						wrapAround : false,
 						centerR : 30,
@@ -47,26 +48,31 @@ imageFun.fx = imageFun.fx || {};
 					});
 				}
 			});
-		}
-
-		function drawVideoToCanvas() {
+		};
+		var drawVideoToCanvas = function() {
 			var canvasW = canvasBuff.width;
 			var canvasH = canvasBuff.height;
 			canvasContext.drawImage(localVideo, 0, 0, canvasW, canvasH);
-		}
-
-		function drawVideoToBuffCanvas() {
+		};
+		var drawVideoToBuffCanvas = function() {
 			var canvasW = canvasBuff.width;
 			var canvasH = canvasBuff.height;
 			canvasBuffContext.drawImage(localVideo, 0, 0, canvasW, canvasH);
 
-		}
-
-		function drawBuffToCanvas() {
+		};
+		var drawBuffToCanvas = function() {
 			canvasContext.drawImage(canvasBuff, 0, 0, canvasBuff.width, canvasBuff.height);
-		}
-
-		function callSamplingTimeoutAgain() {
+		};
+		
+		var callSamplingTimeoutAgain;//define here b/c its used in samplingTimeoutCall
+		var samplingTimeoutCall = function() {
+			lastDate = new Date();
+			drawVideoToBuffCanvas();
+			effectFunction(canvasBuff);
+			drawBuffToCanvas();
+			callSamplingTimeoutAgain();
+		};
+		callSamplingTimeoutAgain = function() {
 			var curTime = new Date();
 			var timeDiff = curTime - lastDate;
 			var nextTimeoutTime = samplingPeriod - timeDiff;
@@ -79,30 +85,19 @@ imageFun.fx = imageFun.fx || {};
 			} else {
 				samplingTimeout = setTimeout(samplingTimeoutCall, nextTimeoutTime);
 			}
-		}
-
-		function samplingTimeoutCall() {
-			lastDate = new Date();
-			drawVideoToBuffCanvas();
-			effectFunction(canvasBuff);
-			drawBuffToCanvas();
-			callSamplingTimeoutAgain();
-		}
-
-		function createCanvasCapture() {
+		};
+		var createCanvasCapture = function() {
 			var w = $(localVideo).width();
 			var h = $(localVideo).height();
 			canvasBuff.width = w;
 			canvasBuff.height = h;
-20
 			canvas.width = w;
 			canvas.height = h;
 			imageData = canvas.getContext('2d').getImageData(0, 0, w, h);
 			clearTimeout(samplingTimeout);
 			samplingTimeout = setTimeout(samplingTimeoutCall, samplingPeriod);
-		}
-
-		function onUserMediaSuccess(stream) {
+		};
+		var onUserMediaSuccess = function(stream) {
 			console.log("User has granted access to local media.");
 			var URL = window.webkitURL || window.URL;
 			var url = URL.createObjectURL(stream);
@@ -113,14 +108,12 @@ imageFun.fx = imageFun.fx || {};
 			localVideo.src = url;
 
 			localVideo.autoplay = true;
-		}
-
-		function onUserMediaError(e) {
+		};
+		var onUserMediaError = function(e) {
 			//TODO
 			console.log('error getting media' + e);
-		}
-
-		function getUserCamera() {
+		};
+		var getUserCamera = function() {
 			try {
 				/*chrome cant make assignment of js var to point to native code*/
 				var getUserMediaStrings = ['getUserMedia', 'webkitGetUserMedia'];
@@ -139,14 +132,13 @@ imageFun.fx = imageFun.fx || {};
 				var s;
 				var p = $('<p></p>');
 				s = 'could not get webcam stream. Use a browser that supports getUserMedia API.';
-				s += 'Known to run in Google Chrome 20 (jul 3, 2012) with mediaStream flag enabled';
+				s += 'Known to run in Google Chrome 20 (jul 3, 2012) with mediaStream flag enabledm or latest Opera';
 				p.html(s);
 				$('body').empty().append(p);
 				console.log("getUserMedia error.");
 			}
-		}
-
-		function init() {
+		};
+		var init = function() {
 			canvas = document.getElementById('canvas');
 			canvasBuff = document.createElement('canvas');
 			canvasContext = canvas.getContext('2d');
@@ -157,9 +149,7 @@ imageFun.fx = imageFun.fx || {};
 			addFunctionOptions();
 			getUserCamera();
 			//obtaining media successfully starts the interval to get the video image
-		}
-
-
+		};
 		$(document).ready(init);
 	}()
 );
