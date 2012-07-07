@@ -15,7 +15,7 @@ imageFun.fx = imageFun.fx || {};
 		var lastDate;
 		var imageData;
 		var effectUIcontainer;
-		var uiDestroy;
+		var uiDestroy=null;
 		var addFunctionOptions = function() {
 			var sel = document.getElementById('selectEffect');
 			var iterator, optionElt;
@@ -32,12 +32,16 @@ imageFun.fx = imageFun.fx || {};
 				var selection = event.target.value;
 				effectFunction = imageFun.fx[selection].applyEffect;
 				if(imageFun.ui && imageFun.ui[selection]){
+					if(uiDestroy){
+						uiDestroy();	
+					}
 					imageFun.ui[selection].render(effectUIcontainer);
+					uiDestroy = imageFun.ui[selection].destroy;
 				}else {
-					$(effectUIcontainer).empty();
+					$(effectUIcontainer).empty();//destroy
 				}
 				
-				if (selection === "RGBfilter") {
+				if (selection === "rgbFilter") {
 					//set rgb filter to something more interesting
 					imageFun.fx[selection].changeSettings({
 						wrapAround : false,

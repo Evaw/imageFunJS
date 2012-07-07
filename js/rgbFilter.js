@@ -105,6 +105,8 @@ imageFun.fx = imageFun.fx || {};
 				fxCore.pixelByPixelIteration(canvas, me.effectFunction);
 			}
 		};
+	
 		$.extend(imageFun.fx.rgbFilter, base);
+		me._checkInRange = me._checkInRangeNoWrapAround;
 	}()
 );
