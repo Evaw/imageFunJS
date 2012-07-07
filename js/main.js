@@ -14,7 +14,8 @@ imageFun.fx = imageFun.fx || {};
 		var samplingPeriod = 100;
 		var lastDate;
 		var imageData;
-
+		var effectUIcontainer;
+		var uiDestroy;
 		var addFunctionOptions = function() {
 			var sel = document.getElementById('selectEffect');
 			var iterator, optionElt;
@@ -30,6 +31,12 @@ imageFun.fx = imageFun.fx || {};
 			$(sel).bind('change', function(event) {
 				var selection = event.target.value;
 				effectFunction = imageFun.fx[selection].applyEffect;
+				if(imageFun.ui && imageFun.ui[selection]){
+					imageFun.ui[selection].render(effectUIcontainer);
+				}else {
+					$(effectUIcontainer).empty();
+				}
+				
 				if (selection === "RGBfilter") {
 					//set rgb filter to something more interesting
 					imageFun.fx[selection].changeSettings({
@@ -139,6 +146,7 @@ imageFun.fx = imageFun.fx || {};
 			}
 		};
 		var init = function() {
+			effectUIcontainer = document.getElementById('effect-ui-container-id');
 			canvas = document.getElementById('canvas');
 			canvasBuff = document.createElement('canvas');
 			canvasContext = canvas.getContext('2d');

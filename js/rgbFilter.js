@@ -3,10 +3,10 @@
 var imageFun = imageFun || {};
 imageFun.fx = imageFun.fx || {};
 ( function() {"use strict";
-		imageFun.fx.RGBfilter = {};
+		imageFun.fx.rgbFilter = {};
 		//imageFun.fx.effectName.prototype = imageFun.fx.fxCore;
 		var fxCore = imageFun.fxCore;
-		var me = imageFun.fx.RGBfilter;
+		var me = imageFun.fx.rgbFilter;
 
 		var base = {
 			settings : {
@@ -105,6 +105,6 @@ imageFun.fx = imageFun.fx || {};
 				fxCore.pixelByPixelIteration(canvas, me.effectFunction);
 			}
 		};
-		$.extend(imageFun.fx.RGBfilter, base);
+		$.extend(imageFun.fx.rgbFilter, base);
 	}()
 );

@@ -2,6 +2,18 @@
 <html>
 	<head>
 		<title>Fun With Cam</title>
+		<link href="jQueryUI/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="stylesheet"/>
+		<script src="jQueryUI/js/jquery-1.7.2.min.js"></script>
+		<script src="jQueryUI/js/jquery-ui-1.8.21.custom.min.js"></script>
+		<script src="js/effectUtils.js"></script>
+		<script src="js/simpleEffects.js"></script>
+		<script src="js/addNoise.js"></script>
+		<script src="js/addNoise.ui.js"></script>
+		<script src="js/rgbFilter.js"></script>
+		<!--
+		<script src="js/fft.js"></script>
+		-->
+		<script src="./js/main.js"></script>
 	</head>
 	<body>
 		<div>
@@ -10,19 +22,14 @@
 			</select>
 		</div>
 		<div>
-			<video id="video" width="256" height="256">unable to use html video tag</video>
-			<canvas id="canvas">Unable to use canvas</canvas>
-			<div class="effect-ui-container"></div>
+			<video id="video" width="128" height="128">
+				unable to use html video tag
+			</video>
+			<canvas id="canvas">
+				Unable to use canvas
+			</canvas>
+			<div id="effect-ui-container-id" class="effect-ui-container"></div>
 		</div>
 	</body>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-	<script src="js/effectUtils.js"></script>
-	<script src="js/SimpleEffects.js"></script>
-	<script src="js/AddNoise.js"></script>
-	<script src="js/RGBfilter.js"></script>
-	<!--
-	<script src="js/fft.js"></script>
-	-->
-	<script src="./js/main.js">
-	</script>
+
 </html>

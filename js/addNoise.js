@@ -63,9 +63,20 @@ imageFun.fx = imageFun.fx || {};
 				 */
 
 			},
-			changeParameters : function(newMean, newStdev) {
-				me.mean = newMean;
-				me.stdev = newStdev;
+			/**
+			 * 
+			 * @param {Object} obj  in the form of: {mean:number, stdev:number}
+			 * range of mean [-Infinity, Infinity]
+			 * range of stdev [0, Infinity]
+			 */
+			changeParameters : function(obj) {
+				if(obj.mean){
+					me.mean = fxCore.clamp(obj.mean, 255,-255);	
+				}
+				if(obj.stdev){
+					me.stdev = obj.stdev;
+				}
+				
 			}
 		};
 		$.extend(imageFun.fx.addNoise, addNoiseBase);
