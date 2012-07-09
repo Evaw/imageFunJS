@@ -3,7 +3,7 @@
 var imageFun = imageFun || {};
 imageFun.fx = imageFun.fx || {};
 ( function() {"use strict";
-		var fxCore = imageFun.fxCore;
+		var utils = imageFun.utils;
 		var simpleEffects = {
 			noEffect : {
 				applyEffect : function() {
@@ -17,7 +17,7 @@ imageFun.fx = imageFun.fx || {};
 
 				},
 				applyEffect : function(canvas, options) {
-					fxCore.pixelByPixelIteration(canvas, simpleEffects.setRZero.effectFunction);
+					utils.pixelByPixelIteration(canvas, simpleEffects.setRZero.effectFunction);
 				}
 			},
 			setGZero : {
@@ -27,7 +27,7 @@ imageFun.fx = imageFun.fx || {};
 
 				},
 				applyEffect : function(canvas, options) {
-					fxCore.pixelByPixelIteration(canvas, simpleEffects.setGZero.effectFunction);
+					utils.pixelByPixelIteration(canvas, simpleEffects.setGZero.effectFunction);
 				}
 			},
 			setBZero : {
@@ -37,7 +37,7 @@ imageFun.fx = imageFun.fx || {};
 
 				},
 				applyEffect : function(canvas, options) {
-					fxCore.pixelByPixelIteration(canvas, simpleEffects.setBZero.effectFunction);
+					utils.pixelByPixelIteration(canvas, simpleEffects.setBZero.effectFunction);
 				}
 			},
 			blackAndWhite : {
@@ -50,7 +50,7 @@ imageFun.fx = imageFun.fx || {};
 					imgData[dataIndex + 2] = avg;
 				},
 				applyEffect : function(canvas, options) {
-					fxCore.pixelByPixelIteration(canvas, simpleEffects.blackAndWhite.effectFunction);
+					utils.pixelByPixelIteration(canvas, simpleEffects.blackAndWhite.effectFunction);
 				}
 			},
 			grayScale : {
@@ -65,7 +65,7 @@ imageFun.fx = imageFun.fx || {};
 					imgData[dataIndex + 2] = avg;
 				},
 				applyEffect : function(canvas, options) {
-					fxCore.pixelByPixelIteration(canvas, simpleEffects.grayScale.effectFunction);
+					utils.pixelByPixelIteration(canvas, simpleEffects.grayScale.effectFunction);
 				}
 			},
 			chromaBlue : {
@@ -80,7 +80,7 @@ imageFun.fx = imageFun.fx || {};
 					imgData[dataIndex + 2] = avg;
 				},
 				applyEffect : function(canvas, options) {
-					fxCore.pixelByPixelIteration(canvas, simpleEffects.chromaBlue.effectFunction);
+					utils.pixelByPixelIteration(canvas, simpleEffects.chromaBlue.effectFunction);
 				}
 			},
 			chromaRed : {
@@ -95,7 +95,7 @@ imageFun.fx = imageFun.fx || {};
 					imgData[dataIndex + 2] = avg;
 				},
 				applyEffect : function(canvas, options) {
-					fxCore.pixelByPixelIteration(canvas, simpleEffects.chromaRed.effectFunction);
+					utils.pixelByPixelIteration(canvas, simpleEffects.chromaRed.effectFunction);
 				}
 			},
 			swapRGBtoBRG : {
@@ -109,7 +109,7 @@ imageFun.fx = imageFun.fx || {};
 					imgData[dataIndex + 2] = g;
 				},
 				applyEffect : function(canvas, options) {
-					fxCore.pixelByPixelIteration(canvas, simpleEffects.swapRGBtoBRG.effectFunction);
+					utils.pixelByPixelIteration(canvas, simpleEffects.swapRGBtoBRG.effectFunction);
 				}
 			}
 		};

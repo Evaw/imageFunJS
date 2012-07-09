@@ -4,8 +4,8 @@ var imageFun = imageFun || {};
 imageFun.fx = imageFun.fx || {};
 ( function() {"use strict";
 		imageFun.fx.rgbFilter = {};
-		//imageFun.fx.effectName.prototype = imageFun.fx.fxCore;
-		var fxCore = imageFun.fxCore;
+		//imageFun.fx.effectName.prototype = imageFun.fx.utils;
+		var utils = imageFun.utils;
 		var me = imageFun.fx.rgbFilter;
 
 		var base = {
@@ -24,7 +24,10 @@ imageFun.fx = imageFun.fx || {};
 				rangeBdown : 255
 			},
 			_setSettingHelper : function(property, newSettings, defaultVal) {
-				me.settings[property] = newSettings[property] === undefined ? defaultVal : newSettings[property];
+				if(me.settings[property] === undefined){
+					me.settings[property] = defaultVal;
+				}
+				me.settings[property] = newSettings[property] === undefined ? me.settings[property] : newSettings[property];
 			},
 
 			_checkInRangeWrapAround : function(val, center, down, up) {
@@ -102,7 +105,7 @@ imageFun.fx = imageFun.fx || {};
 				
 			},
 			applyEffect : function(canvas, options) {
-				fxCore.pixelByPixelIteration(canvas, me.effectFunction);
+				utils.pixelByPixelIteration(canvas, me.effectFunction);
 			}
 		};
 	

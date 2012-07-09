@@ -9,7 +9,8 @@ imageFun.ui = imageFun.ui || {};
 		var me = imageFun.ui.effectName;
 
 		var base = {
-
+			applyEffect : function(canvas, options) {
+			}
 		};
 		$.extend(imageFun.ui.effectName, base);
 	}()
