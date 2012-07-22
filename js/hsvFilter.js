@@ -3,25 +3,25 @@
 var imageFun = imageFun || {};
 imageFun.fx = imageFun.fx || {};
 ( function() {"use strict";
-		imageFun.fx.rgbFilter = {};
+		imageFun.fx.hsvFilter = {};
 		//imageFun.fx.effectName.prototype = imageFun.fx.utils;
 		var utils = imageFun.utils;
-		var me = imageFun.fx.rgbFilter;
+		var me = imageFun.fx.hsvFilter;
 
 		var base = {
 			settings : {
 				wrapAround : false,
-				centerR : 0,
-				rangeRup : 255,
-				rangeRdown : 255,
+				centerH : 0,
+				rangeHup : 1,
+				rangeHdown : 1,
 
-				centerG : 0,
-				rangeGup : 255,
-				rangeGdown : 255,
+				centerS : 0,
+				rangeSup : 1,
+				rangeSdown : 1,
 
-				centerB : 0,
-				rangeBup : 255,
-				rangeBdown : 255
+				centerV : 0,
+				rangeVup : 1,
+				rangeVdown : 1
 			},
 			_setSettingHelper : function(property, newSettings, defaultVal) {
 				if(me.settings[property] === undefined){
@@ -50,30 +50,29 @@ imageFun.fx = imageFun.fx || {};
 			},
 			/**
 			 * @param settings {Object.<string, number>} in the form of
-			 * {centerR:number, rangeRup:number, centerG, rangeGup, centerB, rangeBup}
 			 * all key value pairs are optional
-			 * numbers range from 0-255
+			 * numbers range from 0-1
 			 * colors that are not in the range are filtered out
-			 * |0--------------------------------------------255|
+			 * |0----------------------------------------------1|
 			 * |---------|===rangeXup=|centerX|===rangeXdown==|-|
 			 * |---------|======colors remaining==============|-|
 			 *
-			 * if center + rangeXup > 255, the filter wraps around depending on its settings
+			 * if center + rangeXup > 1, the filter wraps around depending on its settings
 			 * if center - rangeXdown <0 the filter wraps around depending on its settings
-			 * if no value is specified, center defaults to 0 and range to 255 (ie. no filter)
+			 * if no value is specified, center defaults to 0 and range to 1 (ie. no filter)
 			 */
 			changeSettings : function(settings) {
-				me._setSettingHelper('centerR', settings, 0);
-				me._setSettingHelper('centerG', settings, 0);
-				me._setSettingHelper('centerB', settings, 0);
+				me._setSettingHelper('centerH', settings, 0);
+				me._setSettingHelper('centerS', settings, 0);
+				me._setSettingHelper('centerV', settings, 0);
 				
-				me._setSettingHelper('rangeRup', settings, 255);
-				me._setSettingHelper('rangeGup', settings, 255);
-				me._setSettingHelper('rangeBup', settings, 255);
+				me._setSettingHelper('rangeHup', settings, 1);
+				me._setSettingHelper('rangeSup', settings, 1);
+				me._setSettingHelper('rangeVup', settings, 1);
 
-				me._setSettingHelper('rangeRdown', settings, 255);
-				me._setSettingHelper('rangeGdown', settings, 255);
-				me._setSettingHelper('rangeBdown', settings, 255);
+				me._setSettingHelper('rangeHdown', settings, 1);
+				me._setSettingHelper('rangeSdown', settings, 1);
+				me._setSettingHelper('rangeVdown', settings, 1);
 				
 				me._setSettingHelper('wrapAround', settings, "false");
 				if (me.settings.wrapAround) {
@@ -89,16 +88,16 @@ imageFun.fx = imageFun.fx || {};
 			},
 			effectFunction : function(imgData, x, y, dataIndex) {
 				imgData = imgData.data;
-				
-				if(!me._isInRange('R', imgData[dataIndex])){
+				var hsv = utils.rgbToHsv(imgData[dataIndex], imgData[dataIndex+1], imgData[dataIndex+2])
+				if(!me._isInRange('H', hsv.h)){
 					me._dimPixel(imgData, dataIndex);
 					return;
 				}
-				if(!me._isInRange('G', imgData[dataIndex+1])){
+				if(!me._isInRange('S', hsv.s)){
 					me._dimPixel(imgData, dataIndex);
 					return;
 				} 
-				if(!me._isInRange('B', imgData[dataIndex+2])){
+				if(!me._isInRange('V', hsv.v)){
 					me._dimPixel(imgData, dataIndex);
 					return;
 				}
@@ -109,7 +108,7 @@ imageFun.fx = imageFun.fx || {};
 			}
 		};
 	
-		$.extend(imageFun.fx.rgbFilter, base);
+		$.extend(imageFun.fx.hsvFilter, base);
 		me._checkInRange = me._checkInRangeNoWrapAround;
 	}()
 );

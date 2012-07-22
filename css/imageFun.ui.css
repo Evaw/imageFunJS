@@ -1,0 +1,51 @@
+.color-picker-vertical{
+	display: inline-block;
+	height: 255px;
+	margin-left: 6px;
+}
+.color-picker-canvas{
+	display: inline-block;
+	position: relative;
+}
+.effect-ui-container{
+	display: block;
+}
+
+.filter-ui-wrapper{
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-right: 10px; 
+}
+canvas.color-picker-slider-track{
+	position: absolute;
+	border-radius: 3px;
+	
+}
+.color-picker-vertical .ui-slider-handle{
+	
+	background: transparent;
+	/*border-width: 3px 3px 3px 3px;
+	width: 12px;
+	border-color: transparent #555 transparent #555;
+	*/
+	box-shadow: #333 0px 0px 2px;
+	
+	
+}
+.color-picker-color-preview{
+	width: 80px;
+	height: 30px;
+}
+.rgb-color-picker-colors-area{
+	display: inline-block;
+	width: 256px;
+	height: 256px;
+	line-height: 0px;
+}
+.rgb-filter-svg-holder{
+	position: relative;
+	width: 256px;
+	height: 256px;
+	top: -256px;
+	display: inline-block;
+}

@@ -35,29 +35,30 @@ imageFun.fx = imageFun.fx || {};
 					if(uiDestroy){
 						uiDestroy();	
 					}
+					if (selection === "hsvFilter") {
+						//set rgb filter to something more interesting
+						imageFun.fx[selection].changeSettings({
+							wrapAround : false,
+							centerH : 0.5,
+							rangeHup : 0.1,
+							rangeHdown :0.1,
+	
+							centerS : 0.5,
+							rangeSup : 0.1,
+							rangeSdown : 0.1,
+	
+							centerV : 0.5,
+							rangeVup : 0.1,
+							rangeVdown : 0.1
+						});
+					}
 					imageFun.ui[selection].render(effectUIcontainer);
 					uiDestroy = imageFun.ui[selection].destroy;
 				}else {
 					$(effectUIcontainer).empty();//destroy
 				}
 				
-				if (selection === "rgbFilter") {
-					//set rgb filter to something more interesting
-					imageFun.fx[selection].changeSettings({
-						wrapAround : false,
-						centerR : 30,
-						rangeRup : 55,
-						rangeRdown : 30,
-
-						centerG : 120,
-						rangeGup : 70,
-						rangeGdown : 70,
-
-						centerB : 128,
-						rangeBup : 70,
-						rangeBdown : 70
-					});
-				}
+				
 			});
 		};
 		var drawVideoToCanvas = function() {
