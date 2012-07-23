@@ -5,10 +5,7 @@ imageFun.ui = imageFun.ui || {};
 ( function() {"use strict";
 		imageFun.ui.hsvFilter = {};
 		var utils = imageFun.utils;
-		//imageFun.ui.hsvFilter.prototype = imageFun.ui.uiCore;
-
 		var me = imageFun.ui.hsvFilter;
-
 		var base = {
 			_colorsArea : null,
 			_svgPaper : null,
@@ -53,16 +50,14 @@ imageFun.ui = imageFun.ui || {};
 				me._$colorPreview.css({
 					'background-color' : 'rgb(' + r + ', ' + g + ', ' + b + ")"
 				});
-				imageFun.fx.hsvFilter.changeSettings(settings);
+				//imageFun.fx.hsvFilter.changeSettings(settings);
 			},
 			_canvas : null,
 			_addEventToColorsArea : function() {
-				
 				$(me._colorsArea).bind({
 					click : me._canvasEvFunction,
 					mousemove : me._canvasEvFunction
 				});
-				
 			},
 			_colorCanvas : function() {
 				var ctx = me._canvas.getContext('2d');
@@ -133,7 +128,7 @@ imageFun.ui = imageFun.ui || {};
 				var $htxt = $('<div class="color-picker-text"></div>');
 				var $stxt = $('<div class="color-picker-text"></div>');
 				var $vtxt = $('<div class="color-picker-text"></div>');
-				
+
 				var $hSlider = $('<div class="color-picker-h-slider"></div>');
 				var $sSlider = $('<div class="color-picker-s-slider"></div>');
 				var $vSlider = $('<div class="color-picker-v-slider"></div>');
@@ -141,39 +136,48 @@ imageFun.ui = imageFun.ui || {};
 				holder.append($htxt).append($hSlider).append($stxt).append($sSlider).append($vtxt).append($vSlider);
 				me._$rangeSliders = holder;
 				$hSlider.slider({
-					range: true,
+					range : true,
 					min : 0,
 					max : 1,
-					
-					step: 0.001,
-					values : [filterSettings.rangeHdown,filterSettings.rangeHup],
+
+					step : 0.001,
+					values : [filterSettings.rangeHdown, filterSettings.rangeHup],
 					slide : function(ev, ui) {
-						$htxt.html(" "+ ui.values[0]+ ", "+ui.values[1]);
-						imageFun.fx.hsvFilter.changeSettings({rangeHdown:ui.values[0], rangeHup: ui.values[1]});
+						$htxt.html(" " + ui.values[0] + ", " + ui.values[1]);
+						imageFun.fx.hsvFilter.changeSettings({
+							rangeHdown : ui.values[0],
+							rangeHup : ui.values[1]
+						});
 					}
 				});
 				$sSlider.slider({
-					range: true,
+					range : true,
 					min : 0,
 					max : 1,
-										step: 0.001,
+					step : 0.001,
 
-					values : [filterSettings.rangeSdown,filterSettings.rangeSup],
+					values : [filterSettings.rangeSdown, filterSettings.rangeSup],
 					slide : function(ev, ui) {
-						$stxt.html(" "+ ui.values[0]+ ", "+ui.values[1]);
-						imageFun.fx.hsvFilter.changeSettings({rangeSdown:ui.values[0], rangeSup: ui.values[1]});
+						$stxt.html(" " + ui.values[0] + ", " + ui.values[1]);
+						imageFun.fx.hsvFilter.changeSettings({
+							rangeSdown : ui.values[0],
+							rangeSup : ui.values[1]
+						});
 					}
 				});
 				$vSlider.slider({
-					range: true,
+					range : true,
 					min : 0,
 					max : 1,
-										step: 0.001,
+					step : 0.001,
 
-					values : [filterSettings.rangeVdown,filterSettings.rangeVup],
+					values : [filterSettings.rangeVdown, filterSettings.rangeVup],
 					slide : function(ev, ui) {
-						$vtxt.html(" "+ ui.values[0]+", "+ui.values[1]);
-						imageFun.fx.hsvFilter.changeSettings({rangeVdown:ui.values[0], rangeVup: ui.values[1]});
+						$vtxt.html(" " + ui.values[0] + ", " + ui.values[1]);
+						imageFun.fx.hsvFilter.changeSettings({
+							rangeVdown : ui.values[0],
+							rangeVup : ui.values[1]
+						});
 					}
 				});
 			},
@@ -184,54 +188,67 @@ imageFun.ui = imageFun.ui || {};
 				var canvasTrack = slider.find('canvas');
 				me._sliderCanvas = slider.find('.color-picker-slider-track')[0];
 				slider.slider({
+					range: true,
 					orientation : "vertical",
 					min : 0,
 					max : 255,
-					value : me._zValue,
+					values : [me._zValue*255-10, me._zValue*255+10],
 					slide : function(ev, ui) {
-						me._zValue = ui.value;
+						me._zValue = Math.floor((ui.values[0] + ui.values[1])/2);
+						var range = Math.floor((ui.values[1]-ui.values[0])/2);
 						me._colorCanvas();
-						console.log(me._zValue);
+						console.log(me._zValue + " high" + ui.values[0] + " low"+ ui.values[1]);
+						me.setHtoCenterRectangle(me._rectangle.$tag);
+						var settings = {
+							rangeHup: range,
+							rangeHdown: range
+						};
+						imageFun.fx.hsvFilter.changeSettings(settings);
 					}
 				});
-
+				var middleDiv = $('<div class="middle-of-slider"></div>');
+				slider.find('.ui-slider-range').prepend(middleDiv);
 				me._slider = slider;
 			},
 			destroy : function() {
-
 			},
-			_rectResize:function(rect, changeX, changeY, useChangeX, useChangeY){
-				var curW, curH, newW, newH;
+			getHSVpixel:function(imageData, x,y){
+				var r,g,b;
+				var pixels = imageData.data;
+				var pixelIndex = (x + y * me._canvas.width) * 4;
+				r = pixels[pixelIndex];
+				g = pixels[pixelIndex + 1];
+				b = pixels[pixelIndex + 2];
+				return utils.rgbToHsv(r, g, b);
+			},
+			setHtoCenterRectangle:function(rect){
+				var me = this;
 				rect = $(rect);
-				curH = parseInt(rect.attr('height'),10);
-				curW = parseInt(rect.attr('width'),10);
 				
-				if(useChangeX){
-					newW = imageFun.utils.clamp(curW + changeX, 256,1);
-				} else {
-					newW = curW;
-				}
-				if(useChangeY){
-					newH=imageFun.utils.clamp(curH + changeY, 256,1);
-				} else {
-					newH = curH;
-				}
-				rect.attr({
-					width: newW,
-					height: newH
-				});
+				var w = parseInt(rect.attr('width'),10);
+				var h = parseInt(rect.attr('height'),10);
+				
+				var x = parseInt(rect.attr('x'),10);
+				var y = parseInt(rect.attr('y'),10);
+				
+				var imgData = me._ctx.getImageData(0, 0, me._canvas.width, me._canvas.height);
+					
+				var hsv = me.getHSVpixel(imgData, Math.floor((x+x+w)/2),Math.floor((y+y+h)/2));
+				var settings = {centerH: hsv.h}
+				imageFun.fx.hsvFilter.changeSettings(settings);
 			},
 			render : function(root) {
 				root = $(root);
 				me._colorCanvas();
-
 				var uiWrapper = $('<div class="filter-ui-wrapper"></div>');
-				var colorsArea = $('<div  class="rgb-color-picker-colors-area"></div>');
+				var instructions = $('<div>Resize the rectangle to change the saturation and value treshold.use the slider to change the hue range.</div>')
+				var colorsArea = $('<div  class="color-picker-colors-area"></div>');
 				me._colorsArea = colorsArea;
-				var svgHolder = $('<div id="svg-holder" class="rgb-filter-svg-holder"></div>');
+				var svgHolder = $('<div id="svg-holder" class="color-filter-svg-holder"></div>');
 				
 				colorsArea.append(me._canvas);
 				colorsArea.append(svgHolder);
+				uiWrapper.append(instructions);
 				uiWrapper.append(colorsArea);
 				me._createSlider();
 				uiWrapper.append(me._slider);
@@ -240,95 +257,56 @@ imageFun.ui = imageFun.ui || {};
 				me._slider.ready(function() {
 					me._colorSliderCanvas(me._sliderCanvas, me._slider);
 				});
-				me._createRangeSliders();
+				//me._createRangeSliders();
 				uiWrapper.append(me._$rangeSliders);
 				me._createColorPreview();
 				uiWrapper.append(me._$colorPreview);
-
-				var _svgPaper = [
-					'<svg id="svg" height="300" version="1.1" width="300" xmlns="http://www.w3.org/2000/svg"> ',
-					'   <rect style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: pointer; " x="2" y="2" width="74" height="74" fill="none" stroke="#b40500" stroke-opacity="0.7" stroke-width="2" stroke-dasharray="0">',
-					'	</rect>',
-				    '</svg>'].join('');
-				me._svgPaper = $('#svg-holder').append($(_svgPaper));
-				me._rectangle = $(me._svgPaper.find('rect'));
-				
-				me._rectangle.bind('mousedown',function(){
-					console.log('clicked rectangle!');
-					var r = me._rectangle;
-					var $doc = $(document);
-					var pastX = null;
-					var pastY = null;
-					$doc.bind('mouseup',function(e){
-						$doc.unbind('mousemove.movingrect');
-					});
-					$doc.unbind('mousemove.movingrect');
-					$doc.bind('mousemove.movingrect',function(e){
-						var changeX, changeY, curW, curH;
-						var rectOffsetX, rectOffsetY,rectOffset;
-						var inRectX, inRectY;
-						console.log('moving');
-						console.log(e.clientX);
-						if(pastX===null){
-							pastX = e.pageX;
-							pastY = e.pageY;
-							return;
-						}
-						changeX = e.pageX-pastX;
-						changeY = e.pageY-pastY;
-						pastX = e.pageX;
-						pastY = e.pageY;
-						
-						curW = parseInt(me._rectangle.attr('width'),10);
-						curH = parseInt(me._rectangle.attr('height'),10);
-						rectOffset = me._rectangle.offset();
-						rectOffsetX = rectOffset.left;
-						rectOffsetY = rectOffset.top;
-						
-						inRectX = e.pageX - rectOffsetX;
-						inRectX = inRectX/curW;
-						
-						inRectY = e.pageY - rectOffsetY;
-						inRectY = inRectY/curH;
-						
-						var thresh = 0.1;
-						if(inRectX < 0.1){
-							if(inRectY < thresh){
-								//expand uppper left corner
-								me._rectResize(me._rectangle, changeX, changeY, true, true);
-							} else if(inRectY>1-thresh){
-								//expand upper  right corner
-								me._rectResize(me._rectangle, changeX, changeY, true, true);
-							} else {
-								//expand left
-								me._rectResize(me._rectangle, changeX, changeY, true, false);
-							}
-						} else if(inRectX > 1-thresh){
-							if(inRectY < thresh){
-								//expand uppper right corner
-								me._rectResize(me._rectangle, changeX, changeY, true, true);
-							} else if(inRectY>1-thresh){
-								//expand lower  right corner
-								me._rectResize(me._rectangle, changeX, changeY, true, true);
-							} else {
-								//expand right
-								me._rectResize(me._rectangle, changeX, changeY, true, false);
-							}
-						} else {
-							//in width 
-							if(inRectY>1-thresh){
-								//expand  top 
-								me._rectResize(me._rectangle, changeX, changeY, false, true);
-							} else {
-								//expand bottom
-								me._rectResize(me._rectangle, changeX, changeY, false, true);
-							}
-						}
-
-						
-					});
-					
+				var _svgPaper = ['<svg id="svg" height="256" version="1.1" width="256" xmlns="http://www.w3.org/2000/svg"> ', '</svg>'].join('');
+				me._svgPaper = $(_svgPaper);
+				$('#svg-holder').append(me._svgPaper);
+				var Rect = imageFun.svg.Rect;
+				var rect = new Rect({
+					x : 40,
+					y : 40,
+					width : 30,
+					height : 30
 				});
+				rect.mouseResizeable({minX:0, minY: 0, maxX: 256, maxY: 256, minWidth: 1, minHeight: 1});
+				$(rect).bind('resize', function(e,data){
+					var $tag = rect.$tag;
+					var offset = $tag.offset();
+					
+					var w = data.width;//$tag.attr('width');
+					var h = data.height;//$tag.attr('height');
+					var x = data.x;//$tag.attr('x');
+					var y = data.y;//$tag.attr('y');
+					
+					var normalizedVCenter = ((x+x+w)/2)/256;
+					var upV = w/2/256;
+					var downV = upV;
+					me.setHtoCenterRectangle(rect.$tag);
+					
+					var normalizedSCenter = ((y+y+h)/2)/256;
+					var upS = h/2/256;
+					var downS = upS;
+					
+					var settings = {
+						rangeSdown : downS,
+						centerS : normalizedSCenter,
+						rangeSup : upS,
+						
+						rangeVdown : downV,
+						centerV : normalizedVCenter,
+						rangeVup : upV
+						
+						
+					};
+					imageFun.fx.hsvFilter.changeSettings(settings);
+
+					//var paperOffset = $(me._svgPaper).offset();					
+				});
+				me._svgPaper.append(rect.getMarkup());
+				me._rectangle = rect;
 				me._addEventToColorsArea();
 			}
 		};
