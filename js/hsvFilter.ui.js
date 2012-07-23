@@ -71,7 +71,7 @@ imageFun.ui = imageFun.ui || {};
 				var pixelVal;
 				for ( y = 0; y < h; y += 1) {
 					for ( x = 0; x < w; x += 1) {
-						pixelVal = me._getPixelValue(me._zValue, x, y);
+						pixelVal = me._getPixelValue(255*me._zValue, x, y);
 						pixels[pixelIndex] = pixelVal.r;
 						pixels[pixelIndex + 1] = pixelVal.g;
 						pixels[pixelIndex + 2] = pixelVal.b;
@@ -191,11 +191,12 @@ imageFun.ui = imageFun.ui || {};
 					range: true,
 					orientation : "vertical",
 					min : 0,
-					max : 255,
-					values : [me._zValue*255-10, me._zValue*255+10],
+					max : 1,
+					step: 0.001,
+					values : [me._zValue*0.8, me._zValue],
 					slide : function(ev, ui) {
-						me._zValue = Math.floor((ui.values[0] + ui.values[1])/2);
-						var range = Math.floor((ui.values[1]-ui.values[0])/2);
+						me._zValue = ((ui.values[0] + ui.values[1])/2);
+						var range = ((ui.values[1]-ui.values[0])/2);
 						me._colorCanvas();
 						console.log(me._zValue + " high" + ui.values[0] + " low"+ ui.values[1]);
 						me.setHtoCenterRectangle(me._rectangle.$tag);
