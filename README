@@ -1,4 +1,7 @@
 Playing with canvas pixel manipulation.
+
+demo: http://green-emerald.appspot.com/imageFunJS/camCaptureAndCanvas.html
+
 Current implementations
 
 addNoise: Add gaussian noise to image
@@ -9,4 +12,6 @@ grayScale: use weighted sum of rgb to get the gray value
 noEffect: no effect (for use as control for performance comparison)
 swapRGBtoBRG: swap r,g,b 
 set to zero any of the RGB components
-RGBfilter: a filter that can select a contiguous subset of the HSV colorspace
+
+HSVfilter: a filter that can select a contiguous subset of the HSV colorspace
+
