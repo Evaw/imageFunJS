@@ -188,11 +188,13 @@ imageFun.fx = imageFun.fx || {};
 			 * @param   Number  b       The blue color value
 			 * @return  Object            The HSV representation
 			 */
-			rgbToHsvCache: {},
+			rgbToHsvCache: [],
 			rgbToHsv : function(r, g, b) {
 				var str = "" + r +","+g+","+b;
-				if(imageFun.utils.rgbToHsvCache[str]){
-					return imageFun.utils.rgbToHsvCache[str];
+				var cachedVal = imageFun.utils.rgbToHsvCache[str];
+				if(cachedVal){
+					
+					return cachedVal;
 				}
 				r = r / 255;
 				g = g / 255;
@@ -220,8 +222,8 @@ imageFun.fx = imageFun.fx || {};
 					}
 					h /= 6;
 				}
-				imageFun.utils.rgbToHsvCache[str] = {h:h, s:s, v:v};
-				return imageFun.utils.rgbToHsvCache[str];
+				cachedVal = imageFun.utils.rgbToHsvCache[str] = {h:h, s:s, v:v};
+				return cachedVal;
 			},
 
 			/**
