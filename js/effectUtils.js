@@ -216,7 +216,7 @@ imageFun.fx = imageFun.fx || {};
 					}
 					h /= 6;
 				}
-				return imageFun.utils.rgbToHsvCache[str] = {h:h, s:s, v:v};
+				return {h:h, s:s, v:v};
 
 			},
 
