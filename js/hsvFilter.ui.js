@@ -24,6 +24,7 @@ imageFun.ui = imageFun.ui || {};
 			},
 			_slider : null,
 			_getPixelValue : function(z, x, y) {
+				
 				return utils.hsvToRgb(1 - z / 255, y / 255, x / 255);
 			},
 			_canvasEvFunction : function(ev) {
